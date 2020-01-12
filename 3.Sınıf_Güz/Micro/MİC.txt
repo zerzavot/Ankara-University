@@ -1,0 +1,468 @@
+____________________________________
+XLAT
+;xlat example  
+;indices: 0    1    2    3  
+TABLE DB 3FH, 06H, 5BH, 4FH  
+;DB 66H, 6DH, 7DH, 27H ; these lines are commented since this is not supported by the emulator in 8086 mode
+;DB 7FH, 6FH     
+
+mov al, 1  ; try with 0 to 3
+mov bx, offset TABLE
+xlat 
+____________________________________
+XCHG
+;xchg example
+mov si, 1ah
+mov [si], 1234h
+
+mov ax, 5678h
+
+xchg ax, [si]
+mov bx, [si]
+____________________________________
+;stos example
+mov di, 10h  
+mov ax, 1234h
+stosb ; write contents of ax as byte to the extra segment address indexed by di    
+
+mov di, 20h  
+mov ax, 1234h
+stosw ; write contents of ax as word to the extra segment address indexed by di  
+____________________________________
+; SORT DESC     
+org 100h
+ARRAY DB 11h, 99h, 22h, 88h, 33h, 77h, 44h, 55h
+count DW 8
+
+mov cx, count ; cx=8
+dec cx        ; cx=7
+nextscan: mov bx, cx ; bx stores the number of comparisons
+          mov si, 0                 
+nextcomp: mov al, ARRAY[si]  
+          mov dl, ARRAY[si+1]
+          cmp al, dl
+          jnc noswap
+          mov ARRAY[si], dl
+          mov ARRAY[si+1], al
+noswap:   inc si
+          dec bx  
+          jnz nextcomp
+          loop nextscan    ; cx is automatically decremented in loop
+____________________________________
+;SORT ASC      
+org 100h
+ARRAY DB 11h, 99h, 22h, 88h, 33h, 77h, 44h, 55h
+count DW 8
+
+mov cx, count ; cx=8
+dec cx        ; cx=7
+nextscan: mov bx, cx ; bx stores the number of comparisons
+          mov si, 0                 
+nextcomp: mov al, ARRAY[si]  
+          mov dl, ARRAY[si+1]
+          cmp al, dl ; al-dl
+          jc noswap ; main condition for checking two numbers
+          mov ARRAY[si], dl
+          mov ARRAY[si+1], al
+noswap:   inc si
+          dec bx  
+          jnz nextcomp
+          loop nextscan    ; cx is automatically decremented in loop
+____________________________________
+;FIXED TABLE      
+org 100h
+BLOCK1 DW 1h, 2h, 3h, 4h
+BLOCK2 DW 4 DUP(?)
+                                
+cld; clear direction flag (auto-increment)  
+
+mov cx, 4  
+mov bx,0  
+
+mov si, offset BLOCK1
+mov di, offset BLOCK2  
+
+;push to stack
+l1: lodsw
+push ax    
+inc bx
+loop l1
+        
+mov cx, bx
+;pop from stack
+l2: pop ax
+stosw    
+loop l2
+____________________________________
+DYNAMIC TABLE
+; automatically fills the first block by the given number of values and 
+; then puts it into the second block in reverse order      
+org 100h    
+; allocate space for the blocks 
+NUM DW 10    ; number of elements to be used
+BLOCK1 DW 15 DUP(?) ; allocate a sufficiently large memory area for both blocks
+BLOCK2 DW 15 DUP(?)
+                                
+cld; clear direction flag (auto-increment)  
+
+mov bx, 0 ; used to generate incremental numbers 1,2,3...  
+mov cx, NUM        
+mov di, 0
+;fill the first block
+l0:inc bx
+   mov BLOCK1[di], bx ;fill the word positions in the first block
+   add di,2; next word position
+   dec cx 
+   cmp cx, 0 ; compare cx against 0
+   jnz l0 ; this will stop jumping when cx becomes 0
+
+
+; now reverse the block 
+mov cx, NUM 
+
+mov si, offset BLOCK1
+mov di, offset BLOCK2  
+
+;push to stack
+l1: lodsw
+push ax    
+loop l1
+        
+mov cx, NUM
+;pop from stack
+l2: pop ax
+stosw    
+loop l2
+
+
+
+____________________________________
+;8 bit multiplication
+mov al, 2
+mov bl, 4
+mul bl  ; note that carry flag is 0
+
+;8 bit multiplication, 16 bit result
+mov al, 0xffh
+mov bl, 0x2h
+mul bl  ; note that carry flag is 1
+
+;16 bit multiplication, 16 bit result
+mov ax, 0xffffh
+mov bx, 0xffffh
+mul bx  
+; note that carry flag is 1 and dx stores a value
+
+;signed multiplication
+mov al, -2
+mov bl, 4
+
+imul bl  ; hexadecimal for -8
+____________________________________
+data1 DW 1234H  ; define data1
+
+lea si, data1   
+mov di, 1bh   
+movsb   ; transfer a byte from data segment to extra segment
+
+
+lea si, data1   
+mov di, 1bh   
+movsw  ; transfer a word from data segment to extra segment
+____________________________________
+;org 100h
+;.data
+;
+mov ax, 12h
+mov bx, 34h
+
+push ax
+push bx
+
+pop ax
+pop bx       
+
+
+____________________________________
+; multiplies each element of BLOCK1 by 2 and stores the result in BLOCK2
+;      
+org 100h
+BLOCK1 DW 1h, 2h, 3h, 4h
+BLOCK2 DW 4 DUP(?)
+                                
+cld; clear direction flag (auto-increment)
+mov cx, 4
+mov si, offset BLOCK1
+mov di, offset BLOCK2
+            
+l1:   lodsw 
+      mov dx, 2        
+      mul dx
+      stosw
+      loop l1   
+hlt
+
+
+
+ 
+____________________________________
+;lods example
+mov si, 1ah      
+mov [si], 1234h  
+lodsb ; fills al  
+  
+mov si, 1ah   
+mov [si-2], 1234h 
+lodsw ; fills ax
+____________________________________
+data1 DW 1234H  ; define data1
+data2 DW 5678H  ; define data2
+
+;difference of lea and mov   
+lea di, data2
+lea bx,[di]
+mov cx,[di] 
+
+;this is the same as lea
+mov cx, offset data2
+
+
+lea si, data1   ; address data1 with si
+mov di, offset data2 ; address data2 with di
+mov bx,[si]  ; exchange data1 and data2
+mov cx, [di]
+mov [si], cx
+mov [di], bx 
+               
+; check the data contents of memory locations           
+mov ax, [si]
+mov bx, [di]
+____________________________________
+; create a 32 bit number
+mov [0020h], 1234h 
+mov [0022h], 5678h    
+
+mov di, 0020h
+
+lds bx, [di]  ; transfers the 32 bit number into bx and ds registers
+____________________________________
+NUMB dw 1234h
+
+mov di, offset numb
+mov al, 0
+add al, [di]
+inc di
+add al,[di]
+____________________________________
+org 100h
+           
+mov ax, 1234h
+mov bx, 4321h
+
+call sumAxBx   
+
+hlt
+
+sumAxBx proc  
+        mov dx, 0
+        add dx, ax
+        add dx, bx
+        ret
+sumAxBx endp
+____________________________________
+mov bl, 0xb5h  ; 10110101
+and bl, 3ch    ; 00111100
+               ; result is 00110100 == 34h
+____________________________________
+;revert the hexadecimal digits of a word stored in ax
+;given 0xabcd, we need to get 0xdcba
+;note that we cannot simply rotate the number to left or right 16 times
+;since this would give the original number.
+
+org 100h  
+
+mov ax, 0xabcd
+call revert
+hlt   
+
+revert proc    
+       ; we need to swap the most significant byte with the least significant byte
+       xchg al, ah
+       ; then we need to rotate each byte 4 times
+       mov cl, 4
+       ror al, cl
+       ror ah, cl    
+       ret
+endp
+____________________________________
+; find how many odd and even numbers are in an array 
+;store the count for odd in bx, and for even in dx
+
+org 100h   
+
+ARRAY DW 8, 11, 43, 56, 507, 608, 0, 123, 17, 13
+count DW 10   
+  
+cld; auto-increment  
+mov cx, count
+mov si, offset ARRAY   
+
+mov bx, 0; count for odd numbers 
+mov dx, 0; count for even numbers
+
+;main loop- through all elements
+l0: lodsw ; load as word, since they are stored as words
+    shr ax, 1; shift right the ax by 1 bit so that the least significant bit will be copied to cf
+    jnc even: ; if carry is 1 then odd, otherwise even
+    inc bx
+    jmp cnt
+even: inc dx     
+cnt:  ;continue
+    loop l0
+mov ax, 0; clear ax
+hlt 
+____________________________________
+; nested for loop example
+org 100h
+     
+mov ax, 0
+mov bx, 0
+mov dx, 0
+
+mov cx, 4      
+l0: 
+    push cx
+    mov cx, 3
+        l1:    
+            push cx
+            mov cx, 2
+            l2:  
+                inc ax
+                loop l2
+            pop cx            
+            inc bx
+        loop l1
+    pop cx  
+    inc dx    
+loop l0  
+; end of loops   
+hlt
+____________________________________
+; find the largest element in an array and store it in dx. 
+;The array ends with an 0xaa end-of-block value.
+org 100h   
+;
+ARRAY DB 11h, 22h, 88h, 99h, 33h, 77h, 44h, 55h, 0xaa
+;  
+cld; auto-increment  
+mov si, offset ARRAY 
+mov bx, 0; compare all with bx and store the temp result therein. 
+l0: lodsb 
+    cmp ax,0xaa 
+    jz end
+    cmp ax,bx 
+    jb continue:
+    mov bx, ax    
+continue:     
+    jmp l0 
+end:       
+    mov dx, bx
+hlt   
+____________________________________
+; find the largest element in an array and store it in dx
+org 100h   
+
+ARRAY DB 11h, 22h, 88h, 99h, 33h, 77h, 44h, 55h
+count DW 8   
+  
+cld; auto-increment  
+mov cx, count
+mov si, offset ARRAY 
+mov bx, 0; compare all with bx and store the temp result therein. 
+
+l0: lodsb 
+    cmp ax,bx 
+    jb continue:
+    mov bx, ax    
+continue:     
+    loop l0      
+    mov dx, bx
+hlt   
+ ____________________________________
+ ; factorial example for a number stored in dl
+org 100h
+
+mov al, 1
+mov dl, 4
+
+mov cx, dx
+l0:
+    mul cl     
+    loop l0     
+hlt   
+ ____________________________________
+ ; this code encyrpts a hexadecimal digit stored in dx and decrypts it back to its original value 
+
+; xlat operation: set AL to DS:[BX + unsigned AL]
+
+org 100h  
+
+jmp start
+;  
+;indices:  0,  1, 2,  3,  4,  5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15  
+TABLE1 DB  1,  3, 5,  7,  9, 0xb, 0xc, 0xd, 0xe, 0xf, 0,   2,   4,   6,   8,   0xa
+TABLE2 DB 0xa, 0,0xb, 1, 0xc, 2,  0xd,  3,  0xe,  4,  0xf, 5,   6,   7,   8,    9
+;          0   1  2   3   4   5   6     7    8    9   10   11   12   13   14   15
+
+start:
+mov dx, 0xc
+call encrypt   
+
+call decrypt
+
+hlt
+
+encrypt proc    
+        mov ax, dx  
+        mov bx, offset TABLE1
+        xlat  
+        mov dx, ax
+        ret
+encrypt  endp 
+
+decrypt proc    
+        mov ax, dx  
+        mov bx, offset TABLE2
+        xlat  
+        mov dx, ax
+        ret
+decrypt  endp
+ ____________________________________
+ ;32 bit addition with adc
+
+mov ax, 0xffffh
+mov cx, 1h   
+
+
+add ax,cx; this generates a carry
+
+mov bx,1234h
+mov dx,1h  
+
+adc bx, dx; bx=bx+dx+carry
+ ____________________________________
+ ;takes the absolute difference of ax and bx
+;stores the result in dx
+
+mov ax, 1234h
+mov bx, 5678h
+
+cmp ax, bx
+jc DIFF2; jump if carry==1
+DIFF1: mov dx, ax
+       sub dx, bx
+       jmp DONE
+DIFF2: mov dx, bx
+       sub dx, ax
+DONE:ret ;---- 
+ ____________________________________
