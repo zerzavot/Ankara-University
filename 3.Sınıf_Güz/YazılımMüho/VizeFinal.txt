@@ -1,0 +1,31 @@
+Software_Vize
+* UML diagram,sequence diagram,state diagram(30p)
+	(Student Information System:
+	-Instructor-Admin-Student-Course
+	-Admin S I C u kontrol eder
+	-Instructor Studentların course u almasını onaylar reddeder
+	-Student course secer)
+* Function Point hesaplama
+* Rented car reserved car free car uclusunde free ve reserved olanlar request edilebilir
+Bu durumu proposition yöntemi ile ifade edin.
+* T/F genel sözel bilgiler
+* Student İnfo System de eramus ogrencilerine ait bir sistem yapacaksin.
+Hangi metedolojiyi kullanmalısın?(Plan drived/Agile)Neden?
+
+Software_Final
+
+1.layered arch design anlat advantage ve disadvantage
+2.MVC acıkla
+3. Tenis müsabakalarında
+İki takım olacak takımda 2 kişi veya 1 kişi bulunabilir. Bir oyuncu hee iki takımda da oynayabilir. Oyuncu özllikleri streght ve skill
+Skill ball ın angle ını ve hızını etkiler. Ball da angle ve speed değerlerine sahip ve hit net olma ihtimali var. Scoreboard da ise atışın info su ve oyuncunun geçmiş atışları tutulur. 
+
+Draw class diagram
+Choose 2 pattern design. Eger bu sistemde kullanılsa sisteme faydası olacak 2 patteen design yaz ve acıkla
+
+4. LOC KLOC
+FP bulma
+
+5.white box ve black box anlat. Avantajları ve neden ikisini de kullanmalıyız?
+
+6.test case ler bulma
