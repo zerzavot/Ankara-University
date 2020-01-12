@@ -1,0 +1,14 @@
+C final soruları 
+
+1 -> bitwise mask kullanımı
+
+2 -> string içinde başka string arama function  u
+
+3 -> structlarla ilgili nokta çemberin içinde mi sorusu
+
+4 -> bi range içindeki max ı bulduran fonksiyon yaz
+
+5 -> struct arraylarla ilgili file ile ilgili zor spru sololearnda var
+ 
+
+Hepsinde fonksiyon yazdırdı
