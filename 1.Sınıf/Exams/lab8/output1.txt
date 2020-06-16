@@ -1,0 +1,47 @@
+27 45
+55 67
+
+
+
+Constructor A:55 3 //a1(55)
+Constructor A:1 2 
+Constructor B:67 1 2 //b1(67)
+Destructor B:67 1 2
+Destructor A:1 2
+Destructor A:55 3
+Constructor A:45 2
+Constructor B:27 45 2
+Destructor B:27 45 2
+Destructor A:45 2
+
+--------------------------------------
+
+14 28
+43 19
+
+Constructor A:43 3
+Constructor A:1 2
+Constructor B:19 1 2
+Destructor B:19 1 2
+Destructor A:1 2
+Destructor A:43 3
+Constructor A:28 2
+Constructor B:14 28 2
+Destructor B:14 28 2
+Destructor A:28 2
+
+-------------------------------------
+
+115 135
+223 564
+
+Constructor A:223 3
+Constructor A:1 2
+Constructor B:564 1 2
+Destructor B:564 1 2
+Destructor A:1 2
+Destructor A:223 3
+Constructor A:135 2
+Constructor B:115 135 2
+Destructor B:115 135 2
+Destructor A:135 2

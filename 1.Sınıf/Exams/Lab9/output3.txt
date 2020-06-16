@@ -1,0 +1,18 @@
+Constructor C1:777 3
+Constructor C1:222 2
+Constructor C2:222 2 3
+Destructor C2
+Constructor C1:2 3
+Constructor C2:2 3 4
+Constructor C3:555 2 3 4
+Constructor C1:3 4
+Constructor C4:999 2 3 4
+Destructor C2
+Constructor C1:444 666
+Constructor C2:444 666 4
+Constructor C3:333 444 666 4
+333@444@666@4
+Constructor C1:555 999
+Constructor C1:3 3
+1110###1998
+Destructor C2
