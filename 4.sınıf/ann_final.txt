@@ -1,0 +1,64 @@
+What is the equilibrium state in neural networks?
+a.
+The deviation in the present state, when small may perturbations occur.
+b.
+The settlement of the neural network, when small perturbations may occur.
+c.
+None of the mentioned.
+d.
+The changing state, when small perturbations may occur.
+
+
+In artificial neural networks, the process of updating the weight vector is already known as...
+a.
+learning
+b.
+regularization
+c.
+none of the mentioned
+d.
+generalization
+e.
+activation
+
+
+A learning curve is a graph that has axes, namely the number of iterations n and the mean-square value of the estimation error.
+
+
+During the MLP's learning process with back-propagation, the hidden neurons behave as...
+a.
+output calculators
+b.
+all of the mentioned
+c.
+feature detectors
+d.
+weight optimizers
+
+
+The theorem asserted by Cover in 1965 says that in solving a nonlinearly separable pattern-classification problem,
+a.
+it's not usually useful to map the input space into a new higher-dimension space in a nonlinear way.
+b.
+it's advantageous to map the output space to the previous higher-dimensional space in a nonlinear way.
+c.
+it's advantageous to map the input space to a novel space which is higher-dimensional in a nonlinear manner.
+d.
+it's advantageous to build a new output space that has a lower-dimensional space in a linear way.
+
+
+
+Local gradient of neuron j at the nth iteration depends on the neuron's place; if it is at the output layer or at the hidden layer.
+
+
+
+What is unsupervised learning?
+a.
+Neither features nor the number of groups are known.
+b.
+None of the mentioned.
+c.
+Features of the groups are explicitly stated.
+d.
+The number of groups might be known.
+
